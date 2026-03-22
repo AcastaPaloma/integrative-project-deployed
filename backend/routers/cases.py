@@ -91,8 +91,13 @@ async def upload_modality(case_id: str, modality: str, request: Request, file: U
         raise HTTPException(status_code=404, detail="Case not found")
 
     target = manager.file_manager.input_path(case_id, modality)
-    with target.open("wb") as f:
-        shutil.copyfileobj(file.file, f)
+    # Save to a temp file first, then gzip-compress if needed
+    import tempfile
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".nii.upload") as tmp:
+        shutil.copyfileobj(file.file, tmp)
+        tmp_path = Path(tmp.name)
+    manager.file_manager.save_upload(case_id, modality, tmp_path)
+    tmp_path.unlink(missing_ok=True)
 
     updated_modalities = sorted(list(set(case["modalities"] + [modality])))
     await store.set_modalities(case_id, updated_modalities)

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import gzip
 from pathlib import Path
 import shutil
 from typing import Literal
@@ -26,8 +27,34 @@ class FileManager:
         return root
 
     def input_path(self, case_id: str, modality: str) -> Path:
+        """Return the canonical input path for a modality.
+
+        Always stores as .nii.gz — uploads of plain .nii files are
+        gzip-compressed on save so nibabel/MONAI can always expect gzip.
+        """
         self.ensure_case_dirs(case_id)
         return self.case_dir(case_id) / "inputs" / f"{modality}.nii.gz"
+
+    def save_upload(self, case_id: str, modality: str, source_path: Path) -> Path:
+        """Save an uploaded file, gzip-compressing plain .nii files."""
+        target = self.input_path(case_id, modality)
+
+        # Check if the file is already gzip-compressed
+        is_gzip = False
+        with open(source_path, "rb") as f:
+            magic = f.read(2)
+            is_gzip = magic == b"\x1f\x8b"
+
+        if is_gzip:
+            # Already gzipped — just copy/move
+            shutil.copy2(source_path, target)
+        else:
+            # Plain .nii — gzip-compress it on save
+            with open(source_path, "rb") as f_in:
+                with gzip.open(target, "wb") as f_out:
+                    shutil.copyfileobj(f_in, f_out)
+
+        return target
 
     def output_path(self, case_id: str, filename: str) -> Path:
         self.ensure_case_dirs(case_id)
