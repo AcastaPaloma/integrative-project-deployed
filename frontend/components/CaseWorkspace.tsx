@@ -110,11 +110,17 @@ export default function CaseWorkspace({ caseId, initialCase, initialModels, init
             <span>Inference is running…</span>
             <small>The viewer will load automatically once results are ready.</small>
           </div>
+        ) : caseData.status === "completed" ? (
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: 300, color: "#6b8ab3", fontSize: "1.05rem", flexDirection: "column", gap: "0.5rem" }}>
+            <span style={{ fontSize: "1.6rem" }}>✅</span>
+            <span>Inference completed — loading results…</span>
+            <button onClick={() => window.location.reload()}>Reload page</button>
+          </div>
         ) : caseData.modalities.length > 0 ? (
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: 300, color: "#6b8ab3", fontSize: "1.05rem", flexDirection: "column", gap: "0.5rem" }}>
             <span style={{ fontSize: "1.6rem" }}>🧠</span>
             <span>{caseData.modalities.length} modality file(s) uploaded</span>
-            <small>Select a model and run inference to generate brain segmentation results.</small>
+            <small>Select a compatible model and run inference to generate brain segmentation results.</small>
           </div>
         ) : (
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: 200, color: "#6b8ab3" }}>
