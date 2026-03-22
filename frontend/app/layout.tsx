@@ -9,7 +9,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <main className="app-shell">
           <header className="top-nav glass-panel">
             <strong>Brain Segmentation Studio</strong>
-            <nav style={{ display: "flex", gap: "0.8rem" }}>
+            <nav>
               <Link href="/">Dashboard</Link>
               <Link href="/cases">Cases</Link>
               <Link href="/cases/new">New Case</Link>
