@@ -24,7 +24,7 @@ def configure_training_repo_imports(source_repo_root: Path) -> None:
 
 
 def _load_checkpoint_config(checkpoint_path: Path) -> dict:
-    checkpoint = torch.load(str(checkpoint_path), map_location="cpu")
+    checkpoint = torch.load(str(checkpoint_path), map_location="cpu", weights_only=False)
     if "config" not in checkpoint:
         raise RuntimeError("Checkpoint does not contain embedded config")
     return copy.deepcopy(checkpoint["config"])

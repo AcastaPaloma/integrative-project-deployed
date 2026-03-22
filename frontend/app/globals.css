@@ -118,8 +118,8 @@ a:hover {
   gap: 1rem;
 }
 
-.grid.cols-2 {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+canvas {
+  border: none;
 }
 
 h1,
@@ -196,10 +196,6 @@ pre {
   font-size: 0.83rem;
 }
 
-canvas {
-  border: 1px solid rgba(20, 65, 118, 0.15);
-}
-
 .badge-danger {
   color: var(--danger);
   font-weight: 700;
@@ -215,7 +211,5 @@ canvas {
     flex-direction: column;
   }
 
-  .grid.cols-2 {
-    grid-template-columns: 1fr;
-  }
+
 }

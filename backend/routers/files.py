@@ -15,7 +15,11 @@ async def get_input_file(case_id: str, modality: str, request: Request):
     path = manager.file_manager.input_path(case_id, modality)
     if not path.exists():
         raise HTTPException(status_code=404, detail="Input file not found")
-    return FileResponse(path)
+    return FileResponse(
+        path,
+        media_type="application/gzip",
+        filename=path.name,
+    )
 
 
 @router.get("/cases/{case_id}/outputs/{filename}")
@@ -24,7 +28,11 @@ async def get_output_file(case_id: str, filename: str, request: Request):
     path = manager.file_manager.output_path(case_id, filename)
     if not path.exists():
         raise HTTPException(status_code=404, detail="Output file not found")
-    return FileResponse(path)
+    return FileResponse(
+        path,
+        media_type="application/gzip",
+        filename=path.name,
+    )
 
 
 @router.get("/cases/{case_id}/outputs")

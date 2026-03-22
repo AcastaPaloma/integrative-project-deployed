@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { startInferenceJob, ModelItem } from "../lib/api";
+import { fetchCase, startInferenceJob, ModelItem, CaseItem } from "../lib/api";
 import JobLogStream from "./JobLogStream";
 
 type Props = {
@@ -16,6 +16,13 @@ export default function CaseInferencePanel({ caseId, models, uploadedModalities,
   const [busy, setBusy] = useState(false);
   const [currentJobId, setCurrentJobId] = useState<string | null>(null);
   const [error, setError] = useState("");
+
+  /* Sync default selection when models list changes */
+  useMemo(() => {
+    if (models.length > 0 && !models.find((m) => m.id === modelId)) {
+      setModelId(models[0].id);
+    }
+  }, [models, modelId]);
 
   const compatibleModels = useMemo(() => {
     return models.map((m) => ({
@@ -45,21 +52,27 @@ export default function CaseInferencePanel({ caseId, models, uploadedModalities,
   return (
     <div style={{ display: "grid", gap: "0.8rem" }}>
       <h3>Run Inference</h3>
-      <label>
-        Model
-        <select value={modelId} onChange={(event) => setModelId(event.target.value)}>
-          {compatibleModels.map((model) => (
-            <option key={model.id} value={model.id}>
-              {model.name} ({model.score ?? "N/A"}) [{model.compatibility?.status ?? "unknown"}]
-            </option>
-          ))}
-        </select>
-      </label>
-      <button onClick={runInference} disabled={busy || !modelId || blocked}>
-        {busy ? "Submitting..." : "Start inference"}
-      </button>
-      {selected?.compatibility ? <small>{selected.compatibility.reason}</small> : null}
-      {error ? <small style={{ color: "#8f1f1f" }}>{error}</small> : null}
+      {models.length === 0 ? (
+        <small>Upload modalities first to see compatible models.</small>
+      ) : (
+        <>
+          <label>
+            Model
+            <select value={modelId} onChange={(event) => setModelId(event.target.value)}>
+              {compatibleModels.map((model) => (
+                <option key={model.id} value={model.id}>
+                  {model.name} ({model.score != null ? model.score.toFixed(4) : "N/A"}) [{model.compatibility?.status ?? "unknown"}]
+                </option>
+              ))}
+            </select>
+          </label>
+          <button onClick={runInference} disabled={busy || !modelId || blocked}>
+            {busy ? "Submitting…" : "Start inference"}
+          </button>
+          {selected?.compatibility ? <small>{selected.compatibility.reason}</small> : null}
+        </>
+      )}
+      {error ? <small style={{ color: "#a71d2a" }}>{error}</small> : null}
       {currentJobId ? <JobLogStream jobId={currentJobId} /> : null}
     </div>
   );
