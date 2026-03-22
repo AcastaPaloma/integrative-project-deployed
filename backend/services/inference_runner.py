@@ -37,10 +37,19 @@ def _create_dummy_seg(reference_volume: Path, target_path: Path) -> None:
     nib.save(out, str(target_path))
 
 
-def _prepare_sample_dict(case_id: str, inputs: dict[str, str], seg_path: Path) -> dict:
+def _prepare_sample_dict(case_id: str, inputs: dict[str, str], seg_path: Path, modalities: list[str]) -> dict:
+    """Build sample dict using ONLY the modalities the model needs."""
     sample = {"patient_id": case_id, "seg": str(seg_path)}
-    for modality in ["flair", "t1", "t1ce", "t2"]:
-        sample[modality] = inputs.get(modality)
+    for modality in modalities:
+        if modality in inputs:
+            sample[modality] = inputs[modality]
+        else:
+            sample[modality] = None
+    # Always include flair as fallback for NIfTI reference (affine/header)
+    if "flair" not in sample or sample.get("flair") is None:
+        first_available = next((inputs[m] for m in modalities if m in inputs and inputs[m]), None)
+        if first_available:
+            sample["flair"] = first_available
     return sample
 
 
@@ -74,15 +83,17 @@ def run_case_inference(
     started = time.perf_counter()
     configure_training_repo_imports(source_repo_root)
 
-    from src.inference.predict import run_inference  # pylint: disable=import-error
-
     log(f"[INFO] Starting inference for case {case_id}")
+    time.sleep(0.05)
     log(f"[INFO] Model: {model_id}")
+    time.sleep(0.05)
     log(f"[INFO] Profile: {profile}")
+    time.sleep(0.05)
 
     case_outputs_dir.mkdir(parents=True, exist_ok=True)
     inputs_dir = case_outputs_dir.parent / "inputs"
 
+    # Cross-modality handling for unet_4ch
     if model_id == "unet_4ch":
         case_inputs = _ensure_zero_padded_modalities_for_unet4ch(case_inputs, inputs_dir)
         selected_modalities = ["flair", "t1", "t1ce", "t2"]
@@ -91,6 +102,28 @@ def run_case_inference(
     if not case_inputs:
         raise RuntimeError("No uploaded modalities found for this case")
 
+    required_modalities = required_modalities_for_model(model_id)
+    if model_id != "unet_4ch":
+        missing = [m for m in required_modalities if m not in case_inputs]
+        if missing:
+            raise RuntimeError(f"Missing required modalities for {model_id}: {', '.join(missing)}")
+
+    run_modalities = selected_modalities
+    if model_id == "unet_4ch":
+        run_modalities = ["flair", "t1", "t1ce", "t2"]
+
+    log(f"[INFO] Modalities: {', '.join(run_modalities)}")
+    time.sleep(0.05)
+    log(f"[INFO] Inputs: {list(case_inputs.keys())}")
+    time.sleep(0.05)
+
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    log(f"[INFO] Device: {device}")
+    time.sleep(0.05)
+
+    # --- Step 1: Load checkpoint config ---
+    log("[INFO] Loading checkpoint config...")
+    time.sleep(0.05)
     checkpoint_cfg = _load_checkpoint_config(checkpoint_path)
     cfg = copy.deepcopy(checkpoint_cfg)
 
@@ -99,26 +132,27 @@ def run_case_inference(
     cfg["logging"]["use_wandb"] = False
     if not torch.cuda.is_available():
         cfg["training"]["mixed_precision"] = False
+    log("[INFO] Config loaded")
+    time.sleep(0.05)
 
-    required_modalities = required_modalities_for_model(model_id)
-    if model_id != "unet_4ch":
-        missing = [m for m in required_modalities if m not in case_inputs]
-        if missing:
-            raise RuntimeError(f"Missing required modalities for {model_id}: {', '.join(missing)}")
-
+    # --- Step 2: Create dummy segmentation for MONAI ---
     reference_path = Path(next(iter(case_inputs.values())))
     seg_path = case_outputs_dir / "_dummy_seg.nii.gz"
     _create_dummy_seg(reference_path, seg_path)
+    log("[INFO] Dummy segmentation created")
+    time.sleep(0.05)
 
-    sample = _prepare_sample_dict(case_id, case_inputs, seg_path)
-    run_modalities = selected_modalities
-    if model_id == "unet_4ch":
-        run_modalities = ["flair", "t1", "t1ce", "t2"]
+    # --- Step 3: Build sample dict ---
+    sample = _prepare_sample_dict(case_id, case_inputs, seg_path, run_modalities)
+    log(f"[INFO] Sample keys: {list(sample.keys())}")
 
-    log(f"[INFO] Modalities used: {', '.join(run_modalities)}")
+    # --- Step 4: Import and run inference (the heavy part) ---
+    log("[INFO] Importing inference pipeline...")
+    time.sleep(0.05)
+    from src.inference.predict import run_inference  # pylint: disable=import-error
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    log(f"[INFO] Device: {device}")
+    log("[INFO] Running sliding window inference (this may take several minutes on CPU)...")
+    time.sleep(0.05)
 
     results = run_inference(
         cfg=cfg,
@@ -130,9 +164,15 @@ def run_case_inference(
         modalities=run_modalities,
     )
 
+    log(f"[INFO] Inference engine returned {len(results)} result(s)")
+
+    # --- Step 5: Check and post-process outputs ---
     pred_file = case_outputs_dir / f"{case_id}_pred.nii.gz"
     if not pred_file.exists():
-        raise RuntimeError("Prediction file was not generated")
+        available = [f.name for f in case_outputs_dir.iterdir()] if case_outputs_dir.exists() else []
+        raise RuntimeError(f"Prediction file was not generated. Available: {available}")
+
+    log("[INFO] Generating overlay masks (WT, TC, ET)...")
 
     seg = nib.load(str(pred_file)).get_fdata().astype(np.uint8)
     ref_nii = nib.load(str(pred_file))

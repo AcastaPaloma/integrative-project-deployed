@@ -92,8 +92,11 @@ class JobManager:
                 await self._execute_job(job)
                 await self.job_store.update_status(job_id, "completed")
                 await self.case_store.set_status(case["id"], "completed")
-            except (RuntimeError, ValueError, FileNotFoundError, OSError) as exc:
-                await self._append_log(job_id, f"[ERROR] {exc}")
+            except Exception as exc:
+                import traceback
+                tb = traceback.format_exc()
+                await self._append_log(job_id, f"[ERROR] {type(exc).__name__}: {exc}")
+                await self._append_log(job_id, f"[TRACEBACK]\n{tb}")
                 await self.job_store.update_status(job_id, "failed", str(exc))
                 await self.case_store.set_status(case["id"], "failed")
 
