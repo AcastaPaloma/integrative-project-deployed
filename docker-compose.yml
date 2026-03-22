@@ -1,0 +1,33 @@
+version: "3.9"
+services:
+  backend:
+    image: python:3.11-slim
+    working_dir: /app/backend
+    command: bash -lc "pip install -r requirements.txt && uvicorn main:app --host 0.0.0.0 --port 8000"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app/backend
+      - ./data:/app/data
+      - ../integrative-project:/integrative-project:ro
+    environment:
+      BACKEND_SOURCE_REPO_ROOT: /integrative-project
+      BACKEND_CHECKPOINTS_DIR: /integrative-project/checkpoints
+      BACKEND_RESULTS_DIR: /integrative-project/outputs/results
+      BACKEND_CONFIGS_DIR: /integrative-project/configs
+      BACKEND_DATA_DIR: /app/data
+      BACKEND_DB_PATH: /app/data/app.db
+      BACKEND_ALLOW_CORS_ORIGIN: http://localhost:3000
+
+  frontend:
+    image: node:20
+    working_dir: /app/frontend
+    command: bash -lc "npm install && npm run dev"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app/frontend
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+    depends_on:
+      - backend
