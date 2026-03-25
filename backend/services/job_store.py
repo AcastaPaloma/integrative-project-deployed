@@ -55,6 +55,20 @@ class JobStore:
             rows = await cur.fetchall()
         return [self._row_to_dict(r) for r in rows]
 
+    async def list_jobs_for_case(self, case_id: str) -> list[dict[str, Any]]:
+        query = """
+            SELECT id, case_id, status, model_id, profile, selected_modalities_json,
+                   queue_position, created_at, started_at, completed_at, error_message
+            FROM jobs
+            WHERE case_id = ?
+            ORDER BY created_at DESC
+        """
+        async with aiosqlite.connect(self.db_path) as db:
+            db.row_factory = aiosqlite.Row
+            cur = await db.execute(query, (case_id,))
+            rows = await cur.fetchall()
+        return [self._row_to_dict(r) for r in rows]
+
     async def update_status(self, job_id: str, status: str, error_message: str | None = None) -> None:
         started_at = _now() if status == "running" else None
         completed_at = _now() if status in {"completed", "failed", "cancelled"} else None
@@ -104,6 +118,19 @@ class JobStore:
             {"line_number": row["line_number"], "content": row["content"], "created_at": row["created_at"]}
             for row in rows
         ]
+
+    async def delete_case_history(self, case_id: str) -> None:
+        async with aiosqlite.connect(self.db_path) as db:
+            cur = await db.execute("SELECT id FROM jobs WHERE case_id = ?", (case_id,))
+            rows = await cur.fetchall()
+            job_ids = [row[0] for row in rows]
+
+            if job_ids:
+                placeholders = ",".join("?" for _ in job_ids)
+                await db.execute(f"DELETE FROM log_lines WHERE job_id IN ({placeholders})", job_ids)
+                await db.execute(f"DELETE FROM jobs WHERE id IN ({placeholders})", job_ids)
+
+            await db.commit()
 
     def _row_to_dict(self, row: aiosqlite.Row) -> dict[str, Any]:
         return {

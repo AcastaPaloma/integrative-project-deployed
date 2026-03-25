@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NEURO_SEG_OS - Create New Case</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-dim": "#d4dbdd",
+                        "on-primary-fixed-variant": "#2e5f86",
+                        "on-tertiary-fixed-variant": "#006741",
+                        "outline": "#757c7d",
+                        "surface-bright": "#f9f9f9",
+                        "surface-container-high": "#e4e9ea",
+                        "surface-tint": "#316289",
+                        "on-secondary-fixed-variant": "#525d65",
+                        "on-surface": "#2d3435",
+                        "inverse-primary": "#a2d1fd",
+                        "secondary-container": "#d9e4ed",
+                        "surface": "#f9f9f9",
+                        "primary-dim": "#23567c",
+                        "on-error": "#fff7f6",
+                        "inverse-on-surface": "#9c9d9d",
+                        "on-surface-variant": "#5a6061",
+                        "outline-variant": "#adb3b4",
+                        "on-primary": "#f4f8ff",
+                        "secondary": "#556169",
+                        "on-secondary-container": "#48535b",
+                        "on-tertiary-fixed": "#00472b",
+                        "tertiary": "#006d45",
+                        "tertiary-container": "#97f3be",
+                        "on-secondary-fixed": "#364148",
+                        "primary": "#316289",
+                        "on-tertiary": "#e7ffed",
+                        "on-primary-container": "#22567b",
+                        "surface-container-highest": "#dde4e5",
+                        "error-dim": "#4e0309",
+                        "on-background": "#2d3435",
+                        "on-secondary": "#f4f9ff",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-container": "#cde5ff",
+                        "on-tertiary-container": "#005c39",
+                        "tertiary-dim": "#00603c",
+                        "error-container": "#fe8983",
+                        "surface-container": "#ebeeef",
+                        "primary-fixed-dim": "#b1d9ff",
+                        "background": "#f9f9f9",
+                        "surface-container-low": "#f2f4f4",
+                        "tertiary-fixed-dim": "#8ae4b1",
+                        "surface-variant": "#dde4e5",
+                        "on-primary-fixed": "#044367",
+                        "error": "#9f403d",
+                        "inverse-surface": "#0c0f0f",
+                        "secondary-dim": "#4a555c",
+                        "primary-fixed": "#cde5ff",
+                        "secondary-fixed-dim": "#cbd6df",
+                        "secondary-fixed": "#d9e4ed",
+                        "tertiary-fixed": "#97f3be",
+                        "on-error-container": "#752121"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Space Mono"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        .font-mono-clinical { font-family: 'Space Mono', monospace; }
+        .font-headline-clinical { font-family: 'Space Grotesk', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface antialiased min-h-screen">
+<!-- TopAppBar -->
+<header class="bg-[#F9F9F9] dark:bg-slate-900 border-b border-[#DDE4E5] dark:border-slate-800 fixed top-0 left-0 w-full h-14 z-50">
+<div class="flex justify-between items-center w-full px-6 h-14 max-w-full mx-auto">
+<div class="flex items-center gap-8">
+<span class="text-lg font-bold tracking-tighter text-[#2D3435] dark:text-slate-100 font-['Space_Mono']">NEURO_SEG_OS</span>
+<nav class="hidden md:flex items-center gap-6 font-['Space_Grotesk'] tracking-tight text-sm">
+<a class="text-[#757C7D] dark:text-slate-500 hover:text-[#2D3435] dark:hover:text-slate-200 transition-colors" href="#">Dashboard</a>
+<a class="text-[#757C7D] dark:text-slate-500 hover:text-[#2D3435] dark:hover:text-slate-200 transition-colors" href="#">Cases</a>
+<a class="text-[#316289] dark:text-blue-400 border-b-2 border-[#316289] dark:border-blue-400 pb-1 font-bold" href="#">New Case</a>
+<a class="text-[#757C7D] dark:text-slate-500 hover:text-[#2D3435] dark:hover:text-slate-200 transition-colors" href="#">Settings</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#316289] cursor-pointer" data-icon="sensors">sensors</span>
+<span class="material-symbols-outlined text-[#316289] cursor-pointer" data-icon="account_circle">account_circle</span>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="bg-[#DDE4E5] dark:bg-slate-950 border-r border-[#757C7D]/20 dark:border-slate-800 fixed left-0 top-0 h-full w-64 hidden lg:flex flex-col z-40 pt-14">
+<div class="p-6 border-b border-[#757C7D]/10">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-primary flex items-center justify-center text-on-primary text-[10px] font-bold">L42</div>
+<div>
+<h2 class="font-['Space_Mono'] text-xs uppercase tracking-widest font-bold text-[#2D3435] dark:text-slate-200">LAB_042</h2>
+<p class="font-['Space_Mono'] text-[10px] text-error uppercase tracking-tighter">Non-Diagnostic</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 py-4 overflow-y-auto">
+<ul class="space-y-1">
+<li>
+<a class="flex items-center gap-3 px-6 py-3 font-['Space_Mono'] text-xs uppercase tracking-widest text-[#757C7D] dark:text-slate-500 hover:bg-[#F2F4F4] dark:hover:bg-slate-800 transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="dashboard">dashboard</span> Overview
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-6 py-3 font-['Space_Mono'] text-xs uppercase tracking-widest text-[#757C7D] dark:text-slate-500 hover:bg-[#F2F4F4] dark:hover:bg-slate-800 transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="folder_open">folder_open</span> Library
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-6 py-3 font-['Space_Mono'] text-xs uppercase tracking-widest bg-[#FFFFFF] dark:bg-slate-900 text-[#316289] dark:text-blue-400 border-l-4 border-[#316289] transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="add_box">add_box</span> Ingest
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-6 py-3 font-['Space_Mono'] text-xs uppercase tracking-widest text-[#757C7D] dark:text-slate-500 hover:bg-[#F2F4F4] dark:hover:bg-slate-800 transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="biotech">biotech</span> Segmentation
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-6 py-3 font-['Space_Mono'] text-xs uppercase tracking-widest text-[#757C7D] dark:text-slate-500 hover:bg-[#F2F4F4] dark:hover:bg-slate-800 transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="settings">settings</span> System
+                    </a>
+</li>
+</ul>
+</nav>
+<div class="mt-auto p-4 border-t border-[#757C7D]/10">
+<button class="w-full bg-primary text-on-primary py-3 px-4 text-[10px] font-['Space_Mono'] font-bold tracking-[0.2em] hover:bg-primary-dim active:scale-[0.98] transition-all">
+                RUN_INFERENCE
+            </button>
+</div>
+<div class="pb-12">
+<ul class="space-y-1">
+<li>
+<a class="flex items-center gap-3 px-6 py-2 font-['Space_Mono'] text-[10px] uppercase tracking-widest text-[#757C7D] dark:text-slate-500 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-xs" data-icon="help_outline">help_outline</span> Support
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-6 py-2 font-['Space_Mono'] text-[10px] uppercase tracking-widest text-[#757C7D] dark:text-slate-500 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-xs" data-icon="terminal">terminal</span> Logs
+                    </a>
+</li>
+</ul>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="lg:ml-64 pt-14 pb-8 min-h-screen">
+<div class="max-w-4xl mx-auto px-6 py-12">
+<!-- Header Section -->
+<div class="mb-12 border-l-4 border-primary pl-6">
+<span class="font-['Space_Mono'] text-[10px] tracking-widest uppercase text-outline mb-2 block">Task_Initiation // 003</span>
+<h1 class="font-['Space_Grotesk'] text-4xl font-bold tracking-tight text-on-surface uppercase">Create New Case</h1>
+<p class="font-['Inter'] text-sm text-on-surface-variant mt-2 max-w-xl">Initialize a new volumetric segmentation task. Ensure all patient identifiers are anonymized according to institutional protocol.</p>
+</div>
+<!-- Form Container -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-12">
+<!-- Technical Metadata (Asymmetric Left) -->
+<div class="md:col-span-3 space-y-8">
+<div class="p-4 bg-surface-container-low border border-outline-variant/30">
+<h3 class="font-['Space_Mono'] text-[10px] font-bold uppercase tracking-widest text-outline mb-4">Case Registry</h3>
+<div class="space-y-4">
+<div>
+<label class="block font-['Space_Mono'] text-[10px] text-outline uppercase tracking-tighter">System ID</label>
+<span class="font-['Space_Mono'] text-xs text-on-surface">AUTOGEN_8829</span>
+</div>
+<div>
+<label class="block font-['Space_Mono'] text-[10px] text-outline uppercase tracking-tighter">Timestamp</label>
+<span class="font-['Space_Mono'] text-xs text-on-surface">2023-11-24 14:02:11</span>
+</div>
+<div>
+<label class="block font-['Space_Mono'] text-[10px] text-outline uppercase tracking-tighter">Operator</label>
+<span class="font-['Space_Mono'] text-xs text-on-surface">STAFF_812</span>
+</div>
+</div>
+</div>
+<div class="p-4 border-l-2 border-error/50 bg-error-container/10">
+<p class="font-['Space_Mono'] text-[10px] text-error font-bold leading-tight">
+                            WARNING: RESEARCH USE ONLY. SYSTEM OUTPUTS ARE NOT VALIDATED FOR CLINICAL DIAGNOSIS.
+                        </p>
+</div>
+</div>
+<!-- Primary Form (Asymmetric Right) -->
+<div class="md:col-span-9">
+<form class="space-y-8">
+<!-- Case Label Input -->
+<div class="space-y-2">
+<div class="flex justify-between items-baseline">
+<label class="font-['Space_Mono'] text-xs font-bold uppercase tracking-widest text-on-surface" for="case-label">Case Label</label>
+<span class="font-['Space_Mono'] text-[10px] text-error uppercase tracking-tighter">REQUIRED</span>
+</div>
+<input class="w-full bg-surface-container-lowest border border-outline-variant px-4 py-3 font-['Space_Mono'] text-sm focus:ring-0 focus:border-primary placeholder:text-outline-variant/50 transition-colors" id="case-label" name="case-label" placeholder="e.g. SUBJ_001_T1W_PRE" required="" type="text"/>
+<p class="font-['Inter'] text-[11px] text-on-surface-variant">Use unique alphanumeric strings. Avoid protected health information (PHI).</p>
+</div>
+<!-- Notes Textarea -->
+<div class="space-y-2">
+<div class="flex justify-between items-baseline">
+<label class="font-['Space_Mono'] text-xs font-bold uppercase tracking-widest text-on-surface" for="notes">Notes</label>
+<span class="font-['Space_Mono'] text-[10px] text-outline uppercase tracking-tighter">OPTIONAL</span>
+</div>
+<textarea class="w-full bg-surface-container-lowest border border-outline-variant px-4 py-3 font-['Inter'] text-sm focus:ring-0 focus:border-primary placeholder:text-outline-variant/50 transition-colors resize-none" id="notes" name="notes" placeholder="Enter specific acquisition parameters or clinical research observations..." rows="6"></textarea>
+</div>
+<!-- Form Actions -->
+<div class="pt-6 flex items-center gap-6">
+<button class="bg-primary text-on-primary font-['Space_Mono'] text-xs font-bold uppercase tracking-[0.2em] px-10 py-4 hover:bg-primary-dim active:scale-[0.99] transition-all border border-primary shadow-sm" type="submit">
+                                CREATE CASE
+                            </button>
+<button class="bg-transparent text-primary font-['Space_Mono'] text-xs font-bold uppercase tracking-[0.2em] px-8 py-4 border border-primary/20 hover:border-primary hover:bg-surface-container-low transition-all" type="button">
+                                CANCEL
+                            </button>
+</div>
+</form>
+<!-- Success State (Hidden by default, shown via logic in a real app) -->
+<div class="mt-12 p-6 border border-tertiary bg-tertiary-container/10 flex items-start gap-4 opacity-0 pointer-events-none">
+<span class="material-symbols-outlined text-tertiary" data-icon="check_circle">check_circle</span>
+<div>
+<p class="font-['Space_Mono'] text-xs font-bold text-tertiary uppercase tracking-widest">Case created successfully.</p>
+<p class="font-['Inter'] text-xs text-on-surface-variant mt-1">Routing to workspace and initializing segmentation pipeline...</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-[#2D3435] dark:bg-black fixed bottom-0 left-0 w-full h-8 flex items-center justify-between px-6 z-50 border-t border-[#757C7D]">
+<div class="flex items-center gap-6">
+<span class="font-['Space_Mono'] text-[10px] tracking-tighter uppercase text-white">RESEARCH USE ONLY - NON-DIAGNOSTIC</span>
+</div>
+<div class="flex items-center gap-6 font-['Space_Mono'] text-[10px] tracking-tighter uppercase">
+<span class="text-white">Backend: ONLINE</span>
+<a class="text-[#DDE4E5]/60 hover:text-white transition-colors cursor-pointer" href="#">System Logs</a>
+<a class="text-[#DDE4E5]/60 hover:text-white transition-colors cursor-pointer" href="#">Legal Disclaimer</a>
+</div>
+</footer>
+</body></html>

@@ -69,10 +69,25 @@ async def update_case(case_id: str, payload: UpdateCaseRequest):
 async def delete_case(case_id: str, request: Request):
     settings = get_settings()
     store = CaseStore(settings.db_path.resolve())
+    manager = request.app.state.job_manager
+
+    case = await store.get_case(case_id)
+    if not case:
+        raise HTTPException(status_code=404, detail="Case not found")
+
+    jobs = await manager.job_store.list_jobs_for_case(case_id)
+    active_job = next((job for job in jobs if job["status"] in {"queued", "running"}), None)
+    if active_job:
+        raise HTTPException(
+            status_code=409,
+            detail="Case cannot be deleted while an inference job is queued or running",
+        )
+
+    await manager.job_store.delete_case_history(case_id)
     deleted = await store.delete_case(case_id)
     if not deleted:
         raise HTTPException(status_code=404, detail="Case not found")
-    request.app.state.job_manager.file_manager.remove_case(case_id)
+    manager.file_manager.remove_case(case_id)
     return {"ok": True}
 
 

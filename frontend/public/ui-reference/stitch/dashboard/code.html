@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-dim": "#d4dbdd",
+              "on-primary-fixed-variant": "#2e5f86",
+              "on-tertiary-fixed-variant": "#006741",
+              "outline": "#757c7d",
+              "surface-bright": "#f9f9f9",
+              "surface-container-high": "#e4e9ea",
+              "surface-tint": "#316289",
+              "on-secondary-fixed-variant": "#525d65",
+              "on-surface": "#2d3435",
+              "inverse-primary": "#a2d1fd",
+              "secondary-container": "#d9e4ed",
+              "surface": "#f9f9f9",
+              "primary-dim": "#23567c",
+              "on-error": "#fff7f6",
+              "inverse-on-surface": "#9c9d9d",
+              "on-surface-variant": "#5a6061",
+              "outline-variant": "#adb3b4",
+              "on-primary": "#f4f8ff",
+              "secondary": "#556169",
+              "on-secondary-container": "#48535b",
+              "on-tertiary-fixed": "#00472b",
+              "tertiary": "#006d45",
+              "tertiary-container": "#97f3be",
+              "on-secondary-fixed": "#364148",
+              "primary": "#316289",
+              "on-tertiary": "#e7ffed",
+              "on-primary-container": "#22567b",
+              "surface-container-highest": "#dde4e5",
+              "error-dim": "#4e0309",
+              "on-background": "#2d3435",
+              "on-secondary": "#f4f9ff",
+              "surface-container-lowest": "#ffffff",
+              "primary-container": "#cde5ff",
+              "on-tertiary-container": "#005c39",
+              "tertiary-dim": "#00603c",
+              "error-container": "#fe8983",
+              "surface-container": "#ebeeef",
+              "primary-fixed-dim": "#b1d9ff",
+              "background": "#f9f9f9",
+              "surface-container-low": "#f2f4f4",
+              "tertiary-fixed-dim": "#8ae4b1",
+              "surface-variant": "#dde4e5",
+              "on-primary-fixed": "#044367",
+              "error": "#9f403d",
+              "inverse-surface": "#0c0f0f",
+              "secondary-dim": "#4a555c",
+              "primary-fixed": "#cde5ff",
+              "secondary-fixed-dim": "#cbd6df",
+              "secondary-fixed": "#d9e4ed",
+              "tertiary-fixed": "#97f3be",
+              "on-error-container": "#752121"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Inter"],
+              "label": ["Space Mono"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        .mono { font-family: 'Space Mono', monospace; }
+        .grotesk { font-family: 'Space Grotesk', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full h-14 bg-[#F9F9F9] dark:bg-slate-900 border-b border-[#DDE4E5] dark:border-slate-800 z-50 flex justify-between items-center px-6">
+<div class="flex items-center gap-8">
+<span class="text-lg font-bold tracking-tighter text-[#2D3435] dark:text-slate-100 font-['Space_Mono']">NEURO_SEG_OS</span>
+<nav class="hidden md:flex gap-6 font-['Space_Grotesk'] tracking-tight text-sm">
+<a class="text-[#316289] dark:text-blue-400 border-b-2 border-[#316289] dark:border-blue-400 pb-1 font-bold" href="#">Dashboard</a>
+<a class="text-[#757C7D] dark:text-slate-500 hover:text-[#2D3435] dark:hover:text-slate-200 transition-colors" href="#">Cases</a>
+<a class="text-[#757C7D] dark:text-slate-500 hover:text-[#2D3435] dark:hover:text-slate-200 transition-colors" href="#">New Case</a>
+<a class="text-[#757C7D] dark:text-slate-500 hover:text-[#2D3435] dark:hover:text-slate-200 transition-colors" href="#">Settings</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined text-[#757C7D] text-lg">sensors</span>
+<span class="absolute -top-1 -right-1 w-2 h-2 bg-tertiary rounded-full"></span>
+</div>
+<span class="material-symbols-outlined text-[#757C7D] text-2xl hover:bg-[#F2F4F4] transition-all cursor-pointer p-1 rounded">account_circle</span>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-64 bg-[#DDE4E5] dark:bg-slate-950 border-r border-[#757C7D]/20 dark:border-slate-800 flex flex-col pt-14 z-40">
+<div class="p-6 border-b border-[#757C7D]/10">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-sm">biotech</span>
+</div>
+<div>
+<div class="font-bold text-[#2D3435] dark:text-slate-200 font-['Space_Mono'] text-sm tracking-tighter">LAB_042</div>
+<div class="font-['Space_Mono'] text-[10px] uppercase tracking-widest text-[#757C7D]">Non-Diagnostic</div>
+</div>
+</div>
+</div>
+<nav class="flex-1 py-4">
+<ul class="space-y-1 px-3">
+<li>
+<a class="flex items-center gap-3 px-3 py-2 bg-[#FFFFFF] dark:bg-slate-900 text-[#316289] dark:text-blue-400 border-l-4 border-[#316289] font-['Space_Mono'] text-xs uppercase tracking-widest transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-sm">dashboard</span>
+                        Overview
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 text-[#757C7D] dark:text-slate-500 hover:bg-[#F2F4F4] dark:hover:bg-slate-800 font-['Space_Mono'] text-xs uppercase tracking-widest transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-sm">folder_open</span>
+                        Library
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 text-[#757C7D] dark:text-slate-500 hover:bg-[#F2F4F4] dark:hover:bg-slate-800 font-['Space_Mono'] text-xs uppercase tracking-widest transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-sm">add_box</span>
+                        Ingest
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 text-[#757C7D] dark:text-slate-500 hover:bg-[#F2F4F4] dark:hover:bg-slate-800 font-['Space_Mono'] text-xs uppercase tracking-widest transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-sm">biotech</span>
+                        Segmentation
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 text-[#757C7D] dark:text-slate-500 hover:bg-[#F2F4F4] dark:hover:bg-slate-800 font-['Space_Mono'] text-xs uppercase tracking-widest transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-sm">settings</span>
+                        System
+                    </a>
+</li>
+</ul>
+</nav>
+<div class="p-4 border-t border-[#757C7D]/10">
+<button class="w-full bg-primary text-on-primary font-['Space_Mono'] text-xs tracking-widest py-3 px-4 rounded-[2px] hover:opacity-90 active:scale-[0.98] transition-all">
+                RUN_INFERENCE
+            </button>
+</div>
+<div class="pb-12">
+<ul class="px-3 space-y-1">
+<li>
+<a class="flex items-center gap-3 px-3 py-2 text-[#757C7D] font-['Space_Mono'] text-[10px] uppercase tracking-widest hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-xs">help_outline</span>
+                        Support
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 text-[#757C7D] font-['Space_Mono'] text-[10px] uppercase tracking-widest hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-xs">terminal</span>
+                        Logs
+                    </a>
+</li>
+</ul>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 pt-14 pb-8 min-h-screen">
+<div class="max-w-[1200px] mx-auto p-8">
+<!-- Page Header -->
+<div class="flex justify-between items-end mb-10 border-b border-outline-variant/30 pb-4">
+<div>
+<h1 class="grotesk text-3xl font-bold text-on-surface tracking-tight">System Dashboard</h1>
+<p class="text-on-surface-variant font-body text-sm mt-1">Real-time hardware telemetry and model performance metrics.</p>
+</div>
+<div class="flex items-center gap-3 bg-surface-container-low px-4 py-2 border border-outline-variant/50">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-tertiary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-tertiary"></span>
+</span>
+<span class="mono text-[10px] tracking-widest text-on-tertiary-container uppercase font-bold">Backend: ONLINE</span>
+</div>
+</div>
+<!-- Asymmetric Grid: Telemetry & Status -->
+<div class="grid grid-cols-12 gap-6 mb-12">
+<!-- System Specs Bento Column -->
+<div class="col-span-12 lg:col-span-5 grid grid-cols-2 gap-4">
+<div class="bg-surface-container-lowest border border-outline-variant p-5">
+<div class="mono text-[10px] text-outline uppercase tracking-widest mb-4">Compute Device</div>
+<div class="mono text-xl font-bold text-primary">CUDA</div>
+<div class="mono text-[10px] text-tertiary mt-1">(Detected)</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant p-5">
+<div class="mono text-[10px] text-outline uppercase tracking-widest mb-4">CUDA Availability</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary text-lg" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="mono text-xl font-bold text-on-surface">YES</span>
+</div>
+</div>
+<div class="col-span-2 bg-surface-container-lowest border border-outline-variant p-5">
+<div class="mono text-[10px] text-outline uppercase tracking-widest mb-4">Default Inference Profile</div>
+<div class="flex items-center justify-between">
+<span class="mono text-lg font-bold text-on-surface">standard-gpu-v1</span>
+<span class="material-symbols-outlined text-outline">memory</span>
+</div>
+</div>
+</div>
+<!-- Disk Usage Visualization -->
+<div class="col-span-12 lg:col-span-7 bg-surface-container-lowest border border-outline-variant p-6 flex flex-col justify-between">
+<div>
+<div class="mono text-[10px] text-outline uppercase tracking-widest mb-6 flex justify-between">
+<span>Disk Usage Telemetry</span>
+<span class="text-on-surface">8.8% CAPACITY</span>
+</div>
+<div class="flex items-end gap-1 h-32 mb-4">
+<!-- Simple Bar Chart Representing Tiers -->
+<div class="bg-primary/20 w-full h-[15%]"></div>
+<div class="bg-primary/20 w-full h-[25%]"></div>
+<div class="bg-primary/20 w-full h-[20%]"></div>
+<div class="bg-primary/20 w-full h-[35%]"></div>
+<div class="bg-primary w-full h-[40%]"></div>
+<div class="bg-outline-variant/20 w-full h-[5%]"></div>
+<div class="bg-outline-variant/20 w-full h-[10%]"></div>
+</div>
+</div>
+<div class="flex justify-between items-baseline pt-4 border-t border-outline-variant/20">
+<span class="mono text-3xl font-bold text-on-surface">45.2 <span class="text-sm font-normal text-outline">GB</span></span>
+<span class="mono text-sm text-outline">TOTAL VOLUME: 512 GB</span>
+</div>
+</div>
+</div>
+<!-- Model Leaderboard Table -->
+<section class="bg-surface-container-lowest border border-outline-variant">
+<div class="p-6 border-b border-outline-variant/30 flex justify-between items-center">
+<h2 class="mono text-xs uppercase tracking-[0.2em] font-bold text-on-surface">Model Performance Leaderboard</h2>
+<span class="mono text-[10px] text-outline">N=3 ACTIVE MODELS</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full border-collapse">
+<thead>
+<tr class="bg-surface-container-low">
+<th class="mono text-[10px] uppercase tracking-widest text-outline text-left p-4 border-b border-outline-variant/30 w-16">Rank</th>
+<th class="mono text-[10px] uppercase tracking-widest text-outline text-left p-4 border-b border-outline-variant/30">Model Name</th>
+<th class="mono text-[10px] uppercase tracking-widest text-outline text-right p-4 border-b border-outline-variant/30">Mean Dice Score</th>
+<th class="mono text-[10px] uppercase tracking-widest text-outline text-right p-4 border-b border-outline-variant/30">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20">
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="mono text-sm p-4 text-primary font-bold">01</td>
+<td class="font-body text-sm p-4 font-medium text-on-surface">BraTS_Segmenter_V2</td>
+<td class="mono text-sm p-4 text-right font-bold">0.89</td>
+<td class="p-4 text-right">
+<span class="inline-flex items-center px-2 py-0.5 rounded-[2px] border border-tertiary text-[10px] mono text-tertiary bg-tertiary/10 uppercase font-bold">Deployed</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="mono text-sm p-4 text-on-surface-variant">02</td>
+<td class="font-body text-sm p-4 text-on-surface">UNet_4ch_Heavy</td>
+<td class="mono text-sm p-4 text-right font-bold">0.85</td>
+<td class="p-4 text-right">
+<span class="inline-flex items-center px-2 py-0.5 rounded-[2px] border border-outline-variant text-[10px] mono text-outline bg-surface uppercase font-bold">Standby</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="mono text-sm p-4 text-on-surface-variant">03</td>
+<td class="font-body text-sm p-4 text-on-surface">ResNet50_Backbone_Alpha</td>
+<td class="mono text-sm p-4 text-right font-bold">0.82</td>
+<td class="p-4 text-right">
+<span class="inline-flex items-center px-2 py-0.5 rounded-[2px] border border-outline-variant text-[10px] mono text-outline bg-surface uppercase font-bold">Standby</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 bg-surface-container-low/30">
+<button class="mono text-[10px] uppercase tracking-widest text-primary font-bold flex items-center gap-2 hover:underline">
+<span class="material-symbols-outlined text-xs">add</span>
+                        Upload New Model Weights
+                    </button>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer -->
+<footer class="fixed bottom-0 left-0 w-full h-8 bg-[#2D3435] dark:bg-black border-t border-[#757C7D] flex items-center justify-between px-6 z-50">
+<div class="font-['Space_Mono'] text-[10px] tracking-tighter uppercase text-[#DDE4E5]/60">
+            RESEARCH USE ONLY - NON-DIAGNOSTIC
+        </div>
+<div class="flex gap-6 items-center">
+<span class="font-['Space_Mono'] text-[10px] tracking-tighter uppercase text-white cursor-pointer hover:underline">Backend: ONLINE</span>
+<span class="font-['Space_Mono'] text-[10px] tracking-tighter uppercase text-[#DDE4E5]/60 cursor-pointer hover:text-white transition-colors">System Logs</span>
+<span class="font-['Space_Mono'] text-[10px] tracking-tighter uppercase text-[#DDE4E5]/60 cursor-pointer hover:text-white transition-colors">Legal Disclaimer</span>
+</div>
+</footer>
+</body></html>

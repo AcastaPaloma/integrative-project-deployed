@@ -45,7 +45,7 @@ export type JobItem = {
   error_message: string | null;
 };
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+export const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 export async function fetchSystemStatus(): Promise<SystemStatus> {
   const response = await fetch(`${API_BASE}/system/status`, { cache: "no-store" });
@@ -93,6 +93,17 @@ export async function fetchCase(caseId: string): Promise<CaseItem> {
   const response = await fetch(`${API_BASE}/cases/${caseId}`, { cache: "no-store" });
   if (!response.ok) throw new Error("Failed to fetch case");
   return response.json();
+}
+
+export async function deleteCase(caseId: string) {
+  const response = await fetch(`${API_BASE}/cases/${caseId}`, {
+    method: "DELETE",
+  });
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error(err.detail ?? "Failed to delete case");
+  }
+  return response.json() as Promise<{ ok: true }>;
 }
 
 export async function uploadModalityFile(caseId: string, modality: string, file: File) {

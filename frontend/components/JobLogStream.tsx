@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+import { API_BASE } from "../lib/api";
 
 type Props = {
   jobId: string;
@@ -11,6 +11,14 @@ type Props = {
 export default function JobLogStream({ jobId }: Props) {
   const [lines, setLines] = useState<string[]>([]);
   const [status, setStatus] = useState("streaming");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const streamRef = useRef<HTMLPreElement | null>(null);
+
+  useEffect(() => {
+    const stream = streamRef.current;
+    if (!stream) return;
+    stream.scrollTop = stream.scrollHeight;
+  }, [lines]);
 
   useEffect(() => {
     const source = new EventSource(`${API_BASE}/jobs/${jobId}/log`);
@@ -21,15 +29,15 @@ export default function JobLogStream({ jobId }: Props) {
     });
 
     source.addEventListener("job_status", (event) => {
-      const payload = JSON.parse((event as MessageEvent).data) as { status: string };
+      const payload = JSON.parse((event as MessageEvent).data) as { status: string; error_message?: string | null };
       setStatus(payload.status);
+      setErrorMessage(payload.error_message ?? null);
       source.close();
 
-      /* When job finishes, reload the page so the viewer picks up new outputs */
       if (payload.status === "completed" || payload.status === "failed") {
-        setTimeout(() => {
+        window.setTimeout(() => {
           window.location.reload();
-        }, 1500);
+        }, 1400);
       }
     });
 
@@ -42,11 +50,15 @@ export default function JobLogStream({ jobId }: Props) {
   }, [jobId]);
 
   return (
-    <div className="glass-panel" style={{ padding: "0.8rem", maxHeight: "320px", overflow: "auto" }}>
-      <strong>Job log ({status})</strong>
-      {status === "completed" && <small style={{ color: "#1a8a3f", marginLeft: "0.5rem" }}>✓ Reloading…</small>}
-      {status === "failed" && <small style={{ color: "#a71d2a", marginLeft: "0.5rem" }}>✗ Check log for errors</small>}
-      <pre style={{ whiteSpace: "pre-wrap", margin: 0, marginTop: "0.5rem" }}>{lines.join("\n")}</pre>
-    </div>
+    <section className="job-log">
+      <div className="job-log-header">
+        <span>job log</span>
+        <span>{status}</span>
+      </div>
+      <pre ref={streamRef} className="job-log-stream">
+        {lines.length > 0 ? lines.join("\n") : "Waiting for the first log line..."}
+        {errorMessage ? `\n\nERROR: ${errorMessage}` : ""}
+      </pre>
+    </section>
   );
 }
